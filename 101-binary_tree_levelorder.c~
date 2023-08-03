@@ -1,0 +1,52 @@
+#include "binary_trees.h"
+
+/**
+ * binary_tree_t - Binary tree node
+ *
+ * @n: Integer stored in the node
+ * @parent: Pointer to the parent node
+ * @left: Pointer to the left child node
+ * @right: Pointer to the right child node
+ */
+struct binary_tree_s
+{
+    int n;
+    struct binary_tree_s *parent;
+    struct binary_tree_s *left;
+    struct binary_tree_s *right;
+};
+
+typedef struct binary_tree_s binary_tree_t;
+
+/**
+ * binary_tree_levelorder - Goes through a binary tree using level-order traversal
+ *
+ * @tree: Pointer to the root node of the tree to traverse
+ * @func: Pointer to a function to call for each node
+ */
+void binary_tree_levelorder(const binary_tree_t *tree, void (*func)(int))
+{
+    if (tree == NULL || func == NULL)
+        return;
+
+    binary_tree_t **queue = malloc(sizeof(binary_tree_t *) * 10000);
+    if (queue == NULL)
+        return;
+
+    int front = 0, rear = 0;
+    queue[rear++] = (binary_tree_t *)tree;
+
+    while (front < rear)
+    {
+        binary_tree_t *current_node = queue[front++];
+        func(current_node->n);
+
+        if (current_node->left)
+            queue[rear++] = current_node->left;
+
+        if (current_node->right)
+            queue[rear++] = current_node->right;
+    }
+
+    free(queue);
+}
