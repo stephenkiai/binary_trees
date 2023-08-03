@@ -8,23 +8,44 @@
  *
  * Return: Pointer to the lowest common ancestor node, or NULL if not found
  */
-binary_tree_t *binary_trees_ancestor(const binary_tree_t *first, const binary_tree_t *second)
+binary_tree_t *binary_trees_ancestor(const binary_tree_t *first, const
+				     binary_tree_t *second)
 {
-if (first == NULL || second == NULL)
-return (NULL);
+	const binary_tree_t *ancestor = NULL;
 
-/*If either of the nodes == the root, then root is lowest common ancestor*/
-if (first == second || first->parent == second || second->parent == first)
-return ((binary_tree_t *)first);
+	if (first == NULL || second == NULL)
+		return (NULL);
 
-/*If first node=parent of second node, first node=lowest common ancestor*/
-if (first == second->parent)
-return ((binary_tree_t *)first);
+	ancestor = first;
 
-/*If second node=parent of first node,second node=lowest common ancestor*/
-if (second == first->parent)
-return ((binary_tree_t *)second);
+	while (ancestor != NULL)
+	{
+		if (binary_tree_is_ancestor(ancestor, second))
+			return ((binary_tree_t *)ancestor);
 
-/*Recursively check for common ancestors in the parents of both nodes*/
-return (binary_trees_ancestor(first->parent, second->parent));
+		ancestor = ancestor->parent;
+	}
+
+	return (NULL);
+}
+
+/**
+ * binary_tree_is_ancestor - Checks if a node is an ancestor of another node
+ *
+ * @node: Pointer to the node to check
+ * @target: Pointer to the target node
+ *
+ * Return: 1 if node is an ancestor of target, 0 otherwise
+ */
+int binary_tree_is_ancestor(const binary_tree_t *node, const
+			    binary_tree_t *target)
+{
+	if (node == NULL)
+		return (0);
+
+	if (node == target)
+		return (1);
+
+	return (binary_tree_is_ancestor(node->left, target) ||
+		binary_tree_is_ancestor(node->right, target));
 }
