@@ -72,5 +72,6 @@ bst_t *array_to_bst(int *array, size_t size);
 int is_complete_recursive(const binary_tree_t *tree, int index, 
 int *current_level, int *prev_level);
 bst_t *bst_search(const bst_t *tree, int value);
+bst_t *bst_remove(bst_t *root, int value);
 
 #endif /*wamoni*/
